@@ -194,13 +194,27 @@ class PDF
     }
 
     /**
+     * Generate the PDF document
+     * @return $this
+     */
+    public function generate(): self
+    {
+        $this->generator->generate(
+            $this->content,
+            $this->filename,
+            $this->format,
+            $this->orientation
+        );
+
+        return $this;
+    }
+
+    /**
      * Return the content of the generated PDF document as string
      * @return string
      */
     public function raw(): string
     {
-        $this->generate();
-
         return $this->generator->raw();
     }
 
@@ -210,8 +224,6 @@ class PDF
      */
     public function download(): void
     {
-        $this->generate();
-
         $this->generator->download();
     }
 
@@ -222,24 +234,6 @@ class PDF
      */
     public function save(): void
     {
-        $this->generate();
-
         $this->generator->save();
-    }
-
-    /**
-     * Generate the PDF document
-     * @return $this
-     */
-    protected function generate(): self
-    {
-        $this->generator->generate(
-            $this->content,
-            $this->filename,
-            $this->format,
-            $this->orientation
-        );
-
-        return $this;
     }
 }
