@@ -47,7 +47,9 @@ declare(strict_types=1);
 namespace Platine\PDF\Generator;
 
 use Dompdf\Dompdf;
+use Platine\Filesystem\Filesystem;
 use Platine\PDF\PDFGeneratorInterface;
+use RuntimeException;
 
 /**
  * @class DOMPDFGenerator
@@ -63,12 +65,33 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     protected Dompdf $dompdf;
 
     /**
+     * The file system to use
+     * @var Filesystem
+     */
+    protected Filesystem $filesystem;
+
+    /**
+    * Whether the document already rendered call
+     * mean to render() method
+    * @var bool
+    */
+    protected $rendered = false;
+
+    /**
+    * The PDF generated filename
+    * @var string
+    */
+    protected $filename = 'dompdf.pdf';
+
+    /**
      * Create new instance
      * @param Dompdf $dompdf
+     * @param Filesystem $filesystem
      */
-    public function __construct(Dompdf $dompdf)
+    public function __construct(Dompdf $dompdf, Filesystem $filesystem)
     {
         $this->dompdf = $dompdf;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -89,5 +112,65 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     {
         $this->dompdf = $dompdf;
         return $this;
+    }
+
+    /**
+     * {@inheritodc}
+     */
+    public function generate(
+        string $content,
+        string $filename = 'output.pdf',
+        string $format = 'A4',
+        string $orientation = 'portrait'
+    ): void {
+        $this->filename = $filename;
+        $this->dompdf->loadHtml($content);
+        $this->dompdf->setPaper($format, $orientation);
+        $this->dompdf->render();
+
+        $this->rendered = true;
+    }
+
+    /**
+     * {@inheritodc}
+     */
+    public function raw(): string
+    {
+        $this->checkIfAlreadyRendered();
+
+        return (string) $this->dompdf->output();
+    }
+
+    /**
+     * {@inheritodc}
+     */
+    public function save(): void
+    {
+        $this->checkIfAlreadyRendered();
+
+        $this->filesystem
+                        ->file($this->filename)
+                        ->write($this->raw());
+    }
+
+    /**
+     * {@inheritodc}
+     */
+    public function download(): void
+    {
+        $this->checkIfAlreadyRendered();
+        $this->dompdf->stream($this->filename);
+    }
+
+    /**
+     * Check if the document already rendered
+     * @return void
+     * @throws RuntimeException
+     */
+    protected function checkIfAlreadyRendered(): void
+    {
+        if (!$this->rendered) {
+            throw new RuntimeException('You must render the document first');
+        }
     }
 }

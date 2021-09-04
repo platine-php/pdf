@@ -53,5 +53,36 @@ namespace Platine\PDF;
 interface PDFGeneratorInterface
 {
 
+    /**
+     * Generate PDF document
+     * @param string $content the content to use
+     * @param string $filename the filename
+     * @param string $format the format
+     * @param string $orientation the orientation
+     * @return void
+     */
+    public function generate(
+        string $content,
+        string $filename = 'output.pdf',
+        string $format = 'A4',
+        string $orientation = 'portrait'
+    ): void;
 
+    /**
+     * Return the raw PDF
+     * @return string
+     */
+    public function raw(): string;
+
+    /**
+     * Download the PDF document
+     * @return void
+     */
+    public function download(): void;
+
+    /**
+     * Save the PDF document on the file system
+     * @return void
+     */
+    public function save(): void;
 }

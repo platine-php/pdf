@@ -60,6 +60,30 @@ class PDF
     protected PDFGeneratorInterface $generator;
 
     /**
+     * The content to use to generate PDF document
+     * @var string
+     */
+    protected string $content = '';
+
+    /**
+     * The PDF generated filename
+     * @var string
+     */
+    protected string $filename = 'output.pdf';
+
+    /**
+     * The PDF document paper type like 'A4', 'A5', 'letter', etc.
+     * @var string
+     */
+    protected string $format = 'A4';
+
+    /**
+     * The PDF document orientation like 'portrait', 'landscape'
+     * @var string
+     */
+    protected string $orientation = 'portrait';
+
+    /**
      * Create new instance
      *
      * @param PDFGeneratorInterface $generator
@@ -86,6 +110,136 @@ class PDF
     public function setGenerator(PDFGeneratorInterface $generator): self
     {
         $this->generator = $generator;
+        return $this;
+    }
+
+    /**
+     * Return the content
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * Return the filename
+     * @return string
+     */
+    public function getFilename(): string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Return the format
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * Return the orientation
+     * @return string
+     */
+    public function getOrientation(): string
+    {
+        return $this->orientation;
+    }
+
+    /**
+     * Set the content
+     * @param string $content
+     * @return $this
+     */
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * Set the filename
+     * @param string $filename
+     * @return $this
+     */
+    public function setFilename(string $filename): self
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+    /**
+     * Set the format
+     * @param string $format
+     * @return $this
+     */
+    public function setFormat(string $format): self
+    {
+        $this->format = $format;
+        return $this;
+    }
+
+    /**
+     * Set the orientation
+     * @param string $orientation
+     * @return $this
+     */
+    public function setOrientation(string $orientation): self
+    {
+        $this->orientation = $orientation;
+        return $this;
+    }
+
+    /**
+     * Return the content of the generated PDF document as string
+     * @return string
+     */
+    public function raw(): string
+    {
+        $this->generate();
+
+        return $this->generator->raw();
+    }
+
+    /**
+     * Download the generated PDF document
+     * @return void
+     */
+    public function download(): void
+    {
+        $this->generate();
+
+        $this->generator->download();
+    }
+
+    /**
+     * Save the content of the generated PDF document on
+     * the file system, etc.
+     * @return void
+     */
+    public function save(): void
+    {
+        $this->generate();
+
+        $this->generator->save();
+    }
+
+    /**
+     * Generate the PDF document
+     * @return $this
+     */
+    protected function generate(): self
+    {
+        $this->generator->generate(
+            $this->content,
+            $this->filename,
+            $this->format,
+            $this->orientation
+        );
+
         return $this;
     }
 }
