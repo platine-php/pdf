@@ -57,7 +57,6 @@ use RuntimeException;
  */
 class DOMPDFGenerator implements PDFGeneratorInterface
 {
-
     /**
      * The DOMPDF instance
      * @var Dompdf
@@ -115,7 +114,7 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     }
 
     /**
-     * {@inheritodc}
+     * {@inheritdoc}
      */
     public function generate(
         string $content,
@@ -132,7 +131,7 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     }
 
     /**
-     * {@inheritodc}
+     * {@inheritdoc}
      */
     public function raw(): string
     {
@@ -142,7 +141,7 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     }
 
     /**
-     * {@inheritodc}
+     * {@inheritdoc}
      */
     public function save(): void
     {
@@ -154,7 +153,7 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     }
 
     /**
-     * {@inheritodc}
+     * {@inheritdoc}
      */
     public function download(): void
     {

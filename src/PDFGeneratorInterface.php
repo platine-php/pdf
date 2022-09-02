@@ -52,7 +52,6 @@ namespace Platine\PDF;
  */
 interface PDFGeneratorInterface
 {
-
     /**
      * Generate PDF document
      * @param string $content the content to use

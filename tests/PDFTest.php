@@ -17,7 +17,6 @@ use Platine\PDF\PDFGeneratorInterface;
  */
 class PDFTest extends PlatineTestCase
 {
-
     public function testConstructorDefault(): void
     {
         $generator = $this->getMockInstance(DOMPDFGenerator::class);

@@ -52,7 +52,6 @@ namespace Platine\PDF;
  */
 class PDF
 {
-
     /**
      * The generator instance to use
      * @var PDFGeneratorInterface
