@@ -20,7 +20,7 @@
 	
     "require": {
         "php": "^7.4 || ^8",
-        "dompdf/dompdf": "^2.0",
+        "dompdf/dompdf": "^2.0.*",
         "platine-php/filesystem": "1.0.x-dev"
     },
 	
