@@ -91,15 +91,9 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     {
         $this->dompdf = $dompdf;
         $this->filesystem = $filesystem;
-        
-        $context = stream_context_create([ 
-            'ssl' => [ 
-                    'verify_peer' => false, 
-                    'verify_peer_name' => false,
-                    'allow_self_signed'=> true
-            ] 
-        ]);
-        $this->dompdf->setHttpContext($context);
+
+        // TODO
+        $this->disableSslVerify();
     }
 
     /**
@@ -168,6 +162,24 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     {
         $this->checkIfAlreadyRendered();
         $this->dompdf->stream($this->filename);
+    }
+
+    /**
+     * Disable the SSL verification
+     * @return $this
+     */
+    public function disableSslVerify(): self
+    {
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ]);
+        $this->dompdf->setHttpContext($context);
+
+        return $this;
     }
 
     /**
