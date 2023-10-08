@@ -91,9 +91,6 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     {
         $this->dompdf = $dompdf;
         $this->filesystem = $filesystem;
-
-        // TODO
-        $this->disableSslVerify();
     }
 
     /**
