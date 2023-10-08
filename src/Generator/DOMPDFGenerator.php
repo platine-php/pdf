@@ -37,7 +37,7 @@
  *  @author Platine Developers Team
  *  @copyright  Copyright (c) 2020
  *  @license    http://opensource.org/licenses/MIT  MIT License
- *  @link   http://www.iacademy.cf
+ *  @link   https://www.platine-php.com
  *  @version 1.0.0
  *  @filesource
  */
@@ -91,6 +91,15 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     {
         $this->dompdf = $dompdf;
         $this->filesystem = $filesystem;
+        
+        $context = stream_context_create([ 
+            'ssl' => [ 
+                    'verify_peer' => false, 
+                    'verify_peer_name' => false,
+                    'allow_self_signed'=> true
+            ] 
+        ]);
+        $this->dompdf->setHttpContext($context);
     }
 
     /**
