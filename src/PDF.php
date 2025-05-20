@@ -53,12 +53,6 @@ namespace Platine\PDF;
 class PDF
 {
     /**
-     * The generator instance to use
-     * @var PDFGeneratorInterface
-     */
-    protected PDFGeneratorInterface $generator;
-
-    /**
      * The content to use to generate PDF document
      * @var string
      */
@@ -87,9 +81,8 @@ class PDF
      *
      * @param PDFGeneratorInterface $generator
      */
-    public function __construct(PDFGeneratorInterface $generator)
+    public function __construct(protected PDFGeneratorInterface $generator)
     {
-        $this->generator = $generator;
     }
 
     /**

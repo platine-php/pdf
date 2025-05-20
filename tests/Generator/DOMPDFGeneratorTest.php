@@ -41,6 +41,20 @@ class DOMPDFGeneratorTest extends PlatineTestCase
         $this->assertEquals($dompdf, $l->getDompdf());
     }
 
+    public function testDisableSslVerify(): void
+    {
+        $dompdf = $this->getMockInstance(Dompdf::class);
+        $filesystem = $this->getMockInstance(Filesystem::class);
+
+        $this->expectMethodCallCount($dompdf, 'setHttpContext', 1);
+        $l = new DOMPDFGenerator($dompdf, $filesystem);
+
+        $l->disableSslVerify();
+
+        $this->assertInstanceOf(Dompdf::class, $l->getDompdf());
+        $this->assertEquals($dompdf, $l->getDompdf());
+    }
+
     public function testGetSetDompdf(): void
     {
         $dompdf = $this->getMockInstance(Dompdf::class);

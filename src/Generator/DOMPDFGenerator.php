@@ -58,18 +58,6 @@ use RuntimeException;
 class DOMPDFGenerator implements PDFGeneratorInterface
 {
     /**
-     * The DOMPDF instance
-     * @var Dompdf
-     */
-    protected Dompdf $dompdf;
-
-    /**
-     * The file system to use
-     * @var Filesystem
-     */
-    protected Filesystem $filesystem;
-
-    /**
     * Whether the document already rendered call
      * mean to render() method
     * @var bool
@@ -87,10 +75,8 @@ class DOMPDFGenerator implements PDFGeneratorInterface
      * @param Dompdf $dompdf
      * @param Filesystem $filesystem
      */
-    public function __construct(Dompdf $dompdf, Filesystem $filesystem)
+    public function __construct(protected Dompdf $dompdf, protected Filesystem $filesystem)
     {
-        $this->dompdf = $dompdf;
-        $this->filesystem = $filesystem;
     }
 
     /**
@@ -147,9 +133,8 @@ class DOMPDFGenerator implements PDFGeneratorInterface
     {
         $this->checkIfAlreadyRendered();
 
-        $this->filesystem
-                        ->file($this->filename)
-                        ->write($this->raw());
+        $this->filesystem->file($this->filename)
+                         ->write($this->raw());
     }
 
     /**
@@ -174,6 +159,7 @@ class DOMPDFGenerator implements PDFGeneratorInterface
                 'allow_self_signed' => true
             ]
         ]);
+
         $this->dompdf->setHttpContext($context);
 
         return $this;
@@ -186,7 +172,7 @@ class DOMPDFGenerator implements PDFGeneratorInterface
      */
     protected function checkIfAlreadyRendered(): void
     {
-        if (!$this->rendered) {
+        if ($this->rendered === false) {
             throw new RuntimeException('You must render the document first');
         }
     }
